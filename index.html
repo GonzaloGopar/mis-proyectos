@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProfeIA — Secuencias Didácticas</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<style>
+  :root {
+    --verde: #2d6a4f;
+    --verde-claro: #52b788;
+    --verde-suave: #d8f3dc;
+    --amarillo: #f4a261;
+    --crema: #fefae0;
+    --cafe: #3d2c1e;
+    --gris: #6b7280;
+    --blanco: #ffffff;
+    --sombra: 0 4px 24px rgba(45,106,79,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--crema);
+    color: var(--cafe);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--verde);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    color: var(--crema);
+  }
+  .logo span { color: var(--amarillo); }
+  .nav-sub {
+    font-size: 0.85rem;
+    color: rgba(254,250,224,0.6);
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--verde) 0%, #1b4332 100%);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--crema);
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--amarillo); }
+  .hero p {
+    color: rgba(254,250,224,0.75);
+    font-size: 1rem;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* CONTENEDOR PRINCIPAL */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  /* SELECTOR DE GRADO */
+  .seccion-titulo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    color: var(--verde);
+    margin-bottom: 0.4rem;
+  }
+  .seccion-sub {
+    color: var(--gris);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .grados-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .grado-btn {
+    background: var(--blanco);
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .grado-btn:hover {
+    border-color: var(--verde-claro);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+  }
+  .grado-btn.activo {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: var(--crema);
+  }
+  .grado-btn .numero {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .grado-btn .label {
+    font-size: 0.78rem;
+    opacity: 0.7;
+  }
+
+  /* MATERIAS */
+  .materias-tabs {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .materia-tab {
+    background: var(--blanco);
+    border: 1.5px solid #e5e7eb;
+    color: var(--gris);
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .materia-tab:hover { border-color: var(--verde-claro); color: var(--verde); }
+  .materia-tab.activo {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: var(--blanco);
+  }
+
+  /* LISTA DE SECUENCIAS */
+  .secuencias-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+  .secuencia-card {
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--sombra);
+    border: 1px solid rgba(45,106,79,0.08);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .secuencia-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(45,106,79,0.15);
+  }
+  .card-materia-badge {
+    display: inline-block;
+    background: var(--verde-suave);
+    color: var(--verde);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .secuencia-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    color: var(--cafe);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .secuencia-card p {
+    font-size: 0.82rem;
+    color: var(--gris);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-footer {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .ver-btn {
+    background: var(--verde-suave);
+    color: var(--verde);
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .ver-btn:hover { background: var(--verde-claro); color: white; }
+
+  /* ESTADO VACÍO */
+  .vacio {
+    text-align: center;
+    padding: 3rem;
+    color: var(--gris);
+    display: none;
+  }
+  .vacio.visible { display: block; }
+  .vacio-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+  /* PANEL INICIAL */
+  .panel-inicio {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--gris);
+  }
+  .panel-inicio-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .panel-inicio h2 {
+    font-family: 'Fraunces', serif;
+    color: var(--verde);
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* MODAL SECUENCIA */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(30,20,10,0.6);
+    z-index: 1000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--blanco);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 780px;
+    margin: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s ease;
+  }
+  .modal-header {
+    background: var(--verde);
+    padding: 1.75rem 2rem;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .modal-header-info h2 {
+    font-family: 'Fraunces', serif;
+    color: var(--crema);
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+  .modal-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .modal-badge {
+    background: rgba(255,255,255,0.15);
+    color: rgba(254,250,224,0.9);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  .modal-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+  .btn-imprimir {
+    background: var(--amarillo);
+    color: var(--cafe);
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: transform 0.15s;
+  }
+  .btn-imprimir:hover { transform: translateY(-1px); }
+  .btn-cerrar {
+    background: rgba(255,255,255,0.15);
+    color: var(--crema);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-body {
+    padding: 2rem;
+    max-height: 65vh;
+    overflow-y: auto;
+  }
+  .modal-contenido {
+    font-size: 0.92rem;
+    color: var(--cafe);
+    line-height: 1.85;
+    white-space: pre-wrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+  
+  /* PDF VIEWER */
+  .pdf-viewer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .pdf-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    background: #f3f4f6;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+  .pdf-toolbar button {
+    background: var(--verde);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .pdf-toolbar button:hover {
+    background: #1b4332;
+  }
+  .pdf-page-info {
+    color: var(--gris);
+    font-weight: 500;
+  }
+  .pdf-canvas-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 1rem;
+    max-height: 60vh;
+    overflow: auto;
+  }
+  #pdfCanvas {
+    max-width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--cafe);
+    color: rgba(254,250,224,0.6);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+    margin-top: 4rem;
+  }
+  footer strong { color: var(--verde-claro); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* IMPRESIÓN */
+  @media print {
+    nav, .modal-header .modal-actions, footer, .modal-overlay ~ * { display: none; }
+    .modal-overlay { position: static; background: none; padding: 0; }
+    .modal { box-shadow: none; border-radius: 0; max-width: 100%; }
+    .modal-header { background: #2d6a4f; -webkit-print-color-adjust: exact; }
+    .modal-body { max-height: none; overflow: visible; }
+    body > *:not(.modal-overlay) { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .grados-grid { grid-template-columns: repeat(3, 1fr); }
+    .modal-header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Profe<span>IA</span></div>
+  <div class="nav-sub">Secuencias Didácticas · CABA y Buenos Aires</div>
+</nav>
+
+<div class="hero">
+  <h1>Secuencias didácticas<br><em>para el nivel primario</em></h1>
+  <p>Seleccioná el grado y la materia para acceder a las secuencias disponibles, leerlas completas e imprimirlas.</p>
+</div>
+
+<div class="main">
+
+  <div class="seccion-titulo">Seleccioná el grado</div>
+  <div class="seccion-sub">Hacé clic en el grado para ver las materias disponibles</div>
+
+  <div class="grados-grid" id="gradosGrid"></div>
+
+  <div id="seccionMaterias" style="display:none">
+    <div class="seccion-titulo" id="tituloMaterias"></div>
+    <div class="seccion-sub">Seleccioná una materia para ver las secuencias</div>
+    <div class="materias-tabs" id="materiasTabs"></div>
+    <div class="secuencias-lista" id="secuenciasLista"></div>
+    <div class="vacio" id="vaciMsg">
+      <div class="vacio-icon">📭</div>
+      <p>No hay secuencias disponibles para esta materia todavía.</p>
+    </div>
+  </div>
+
+  <div class="panel-inicio" id="panelInicio">
+    <div class="panel-inicio-icon">📚</div>
+    <h2>Bienvenido a ProfeIA</h2>
+    <p>Seleccioná un grado arriba para comenzar a explorar las secuencias didácticas disponibles.</p>
+  </div>
+
+</div>
+
+<footer>
+  Hecho con ❤️ para docentes · <strong>ProfeIA</strong> · Contenido basado en el Diseño Curricular de CABA y Buenos Aires
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-info">
+        <h2 id="modalTitulo"></h2>
+        <div class="modal-badges">
+          <span class="modal-badge" id="modalGrado"></span>
+          <span class="modal-badge" id="modalMateria"></span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-imprimir" onclick="imprimirSecuencia()">🖨️ Imprimir</button>
+        <button class="btn-cerrar" onclick="cerrarModal()">✕</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div id="pdfViewer" class="pdf-viewer-container" style="display:none;">
+        <div class="pdf-toolbar">
+          <button onclick="pdfPaginaAnterior()">← Anterior</button>
+          <span class="pdf-page-info">Página <span id="pdfPaginaActual">1</span> de <span id="pdfTotalPaginas">1</span></span>
+          <button onclick="pdfPaginaSiguiente()">Siguiente →</button>
+        </div>
+        <div class="pdf-canvas-wrapper">
+          <canvas id="pdfCanvas"></canvas>
+        </div>
+      </div>
+      <div class="modal-contenido" id="modalContenido" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let datos = {};
+let gradoActivo = null;
+let materiaActiva = null;
+let pdfActual = null;
+let pdfPaginaActual = 1;
+
+const ICONOS_MATERIA = {
+  'Prácticas del Lenguaje': '📖',
+  'Matemática': '🔢',
+  'Ciencias Naturales': '🌿',
+  'Ciencias Sociales': '🗺️',
+};
+
+async function cargarDatos() {
+  try {
+    const res = await fetch('secuencias_clean.json');
+    datos = await res.json();
+    renderGrados();
+  } catch(e) {
+    document.getElementById('panelInicio').innerHTML = `
+      <div class="panel-inicio-icon">⚠️</div>
+      <h2>No se encontró el archivo de secuencias</h2>
+      <p>Asegurate de que el archivo <strong>secuencias_clean.json</strong> esté en la misma carpeta que este index.html.</p>
+    `;
+  }
+}
+
+function renderGrados() {
+  const grid = document.getElementById('gradosGrid');
+  const orden = ['1er grado','2do grado','3er grado','4to grado','5to grado','6to grado','7mo grado'];
+  const gradosDisponibles = orden.filter(g => datos[g]);
+
+  grid.innerHTML = gradosDisponibles.map(grado => {
+    const num = grado.replace(' grado','').replace('er','°').replace('do','°').replace('er','°').replace('to','°').replace('mo','°');
+    return `
+      <div class="grado-btn" onclick="seleccionarGrado('${grado}', this)">
+        <span class="numero">${num}</span>
+        <span class="label">grado</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function seleccionarGrado(grado, btn) {
+  document.querySelectorAll('.grado-btn').forEach(b => b.classList.remove('activo'));
+  btn.classList.add('activo');
+  gradoActivo = grado;
+  materiaActiva = null;
+
+  document.getElementById('panelInicio').style.display = 'none';
+  document.getElementById('seccionMaterias').style.display = 'block';
+  document.getElementById('tituloMaterias').textContent = `Materias de ${grado}`;
+
+  const materias = Object.keys(datos[grado] || {});
+  const tabs = document.getElementById('materiasTabs');
+  tabs.innerHTML = materias.map(m => `
+    <button class="materia-tab" onclick="seleccionarMateria('${m}', this)">
+      ${ICONOS_MATERIA[m] || '📄'} ${m}
+    </button>
+  `).join('');
+
+  document.getElementById('secuenciasLista').innerHTML = '';
+  document.getElementById('vaciMsg').classList.remove('visible');
+}
+
+function seleccionarMateria(materia, btn) {
+  document.querySelectorAll('.materia-tab').forEach(b => b.classList.remove('activo'));
+  btn.classList.add('activo');
+  materiaActiva = materia;
+
+  const secuencias = (datos[gradoActivo] && datos[gradoActivo][materia]) || [];
+  const lista = document.getElementById('secuenciasLista');
+  const vacio = document.getElementById('vaciMsg');
+
+  if (secuencias.length === 0) {
+    lista.innerHTML = '';
+    vacio.classList.add('visible');
+    return;
+  }
+
+  vacio.classList.remove('visible');
+  lista.innerHTML = secuencias.map((s, i) => `
+    <div class="secuencia-card" onclick="abrirModal(${i})">
+      <div class="card-materia-badge">${materia}</div>
+      <h3>${s.titulo}</h3>
+      <p>${s.contenido.substring(0, 180)}...</p>
+      <div class="card-footer">
+        <button class="ver-btn">Ver secuencia completa</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function abrirModal(index) {
+  const secuencia = datos[gradoActivo][materiaActiva][index];
+  document.getElementById('modalTitulo').textContent = secuencia.titulo;
+  document.getElementById('modalGrado').textContent = gradoActivo;
+  document.getElementById('modalMateria').textContent = materiaActiva;
+  
+  const esPDF = secuencia.tipo === 'pdf';
+  
+  if (esPDF) {
+    // Mostrar visor de PDF
+    document.getElementById('pdfViewer').style.display = 'flex';
+    document.getElementById('modalContenido').style.display = 'none';
+    pdfPaginaActual = 1;
+    await cargarPDF(secuencia.archivo);
+  } else {
+    // Mostrar texto
+    document.getElementById('pdfViewer').style.display = 'none';
+    document.getElementById('modalContenido').style.display = 'block';
+    document.getElementById('modalContenido').textContent = secuencia.contenido;
+    pdfActual = null;
+  }
+  
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function cargarPDF(ruta) {
+  try {
+    const pdf = await pdfjsLib.getDocument(ruta).promise;
+    pdfActual = pdf;
+    document.getElementById('pdfTotalPaginas').textContent = pdf.numPages;
+    await renderizarPaginaPDF(1);
+  } catch(e) {
+    console.error('Error cargando PDF:', e);
+    document.getElementById('modalContenido').style.display = 'block';
+    document.getElementById('pdfViewer').style.display = 'none';
+    document.getElementById('modalContenido').textContent = 'Error al cargar el PDF: ' + e.message;
+  }
+}
+
+async function renderizarPaginaPDF(numeroPagina) {
+  if (!pdfActual) return;
+  
+  const page = await pdfActual.getPage(numeroPagina);
+  const canvas = document.getElementById('pdfCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  const viewport = page.getViewport({ scale: 1.5 });
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  
+  await page.render({
+    canvasContext: ctx,
+    viewport: viewport
+  }).promise;
+  
+  pdfPaginaActual = numeroPagina;
+  document.getElementById('pdfPaginaActual').textContent = numeroPagina;
+}
+
+function pdfPaginaAnterior() {
+  if (pdfPaginaActual > 1) {
+    renderizarPaginaPDF(pdfPaginaActual - 1);
+  }
+}
+
+function pdfPaginaSiguiente() {
+  if (pdfActual && pdfPaginaActual < pdfActual.numPages) {
+    renderizarPaginaPDF(pdfPaginaActual + 1);
+  }
+}
+
+function cerrarModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  pdfActual = null;
+}
+
+function imprimirSecuencia() {
+  window.print();
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarModal();
+});
+
+cargarDatos();
+</script>
+</body>
+</html>
