@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoPymes IA — Marketing inteligente para tu negocio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap');
+
+  :root {
+    --negro: #0a0a0a;
+    --blanco: #f5f4f0;
+    --verde: #b8f04a;
+    --verde-oscuro: #3a5c0f;
+    --gris1: #1a1a1a;
+    --gris2: #2a2a2a;
+    --gris3: #3d3d3d;
+    --gris4: #888;
+    --gris5: #bbb;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--verde); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    font-size: 13px; color: var(--gris5); text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--blanco); }
+  .nav-cta {
+    background: var(--verde); color: var(--negro);
+    font-size: 13px; font-weight: 600;
+    padding: 8px 18px; border-radius: 6px;
+    border: none; cursor: pointer;
+    transition: opacity .2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { opacity: 0.88; }
+
+  /* SECCIONES */
+  section { padding: 100px 2rem; max-width: 1100px; margin: 0 auto; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: 120px; padding-bottom: 60px;
+    max-width: 100%;
+    padding-left: 2rem; padding-right: 2rem;
+    position: relative;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(184,240,74,0.1);
+    border: 1px solid rgba(184,240,74,0.25);
+    padding: 6px 14px; border-radius: 99px;
+    font-size: 12px; font-weight: 500; color: var(--verde);
+    margin-bottom: 2rem;
+  }
+  .hero-badge::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+  }
+  h1 .accent { color: var(--verde); }
+  h1 .dim { color: var(--gris3); }
+
+  .hero-sub {
+    font-size: clamp(15px, 2vw, 18px);
+    color: var(--gris5);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--verde); color: var(--negro);
+    font-family: var(--font-body); font-size: 14px; font-weight: 600;
+    padding: 14px 28px; border-radius: 8px;
+    border: none; cursor: pointer; transition: opacity .2s, transform .15s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: var(--blanco);
+    font-family: var(--font-body); font-size: 14px; font-weight: 400;
+    padding: 14px 28px; border-radius: 8px;
+    border: 1px solid var(--gris3); cursor: pointer;
+    transition: border-color .2s;
+  }
+  .btn-secondary:hover { border-color: var(--gris5); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 4rem;
+    padding-top: 2rem; border-top: 1px solid var(--gris2);
+    flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 32px; font-weight: 800; color: var(--blanco);
+  }
+  .stat-label { font-size: 12px; color: var(--gris4); margin-top: 2px; }
+
+  /* TICKER */
+  .ticker-wrap {
+    width: 100%; overflow: hidden;
+    border-top: 1px solid var(--gris2);
+    border-bottom: 1px solid var(--gris2);
+    padding: 14px 0;
+    background: var(--gris1);
+  }
+  .ticker {
+    display: flex; gap: 0; white-space: nowrap;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker span {
+    font-size: 12px; color: var(--gris4);
+    padding: 0 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  .ticker span.hl { color: var(--verde); font-weight: 500; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* SERVICIOS */
+  .section-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+    color: var(--verde); text-transform: uppercase; margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 5vw, 52px);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -1.5px; margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 15px; color: var(--gris5); max-width: 500px;
+    margin-bottom: 3rem; line-height: 1.7;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--gris2);
+    border: 1px solid var(--gris2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .service-card {
+    background: var(--gris1);
+    padding: 2rem;
+    transition: background .2s;
+    cursor: pointer;
+  }
+  .service-card:hover { background: var(--gris2); }
+  .service-icon {
+    width: 40px; height: 40px;
+    background: rgba(184,240,74,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 1.25rem;
+  }
+  .service-name {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 700;
+    margin-bottom: .5rem; letter-spacing: -0.3px;
+  }
+  .service-desc { font-size: 13px; color: var(--gris5); line-height: 1.6; margin-bottom: 1.25rem; }
+  .service-price {
+    font-size: 22px; font-weight: 600; color: var(--verde);
+  }
+  .service-price span { font-size: 12px; color: var(--gris4); font-weight: 400; }
+  .service-includes {
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid var(--gris2);
+    font-size: 12px; color: var(--gris5);
+    line-height: 1.9;
+  }
+  .service-includes li { list-style: none; padding-left: 0; }
+  .service-includes li::before { content: '+ '; color: var(--verde); }
+
+  /* DEMO IA */
+  #demo {
+    background: var(--gris1);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 0 auto;
+    max-width: 1100px;
+    border: 1px solid var(--gris2);
+  }
+  .demo-header { margin-bottom: 2rem; }
+  .demo-tabs {
+    display: flex; gap: 4px; margin-bottom: 1.5rem;
+    background: var(--gris2); padding: 4px;
+    border-radius: 8px; width: fit-content;
+  }
+  .demo-tab {
+    font-size: 12px; font-weight: 500;
+    padding: 7px 16px; border-radius: 6px;
+    border: none; cursor: pointer;
+    background: transparent; color: var(--gris4);
+    transition: all .2s;
+  }
+  .demo-tab.active { background: var(--negro); color: var(--blanco); }
+  .demo-pane { display: none; }
+  .demo-pane.active { display: block; }
+
+  .prompt-area {
+    display: flex; gap: 8px; align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .prompt-input {
+    flex: 1; background: var(--gris2);
+    border: 1px solid var(--gris3); border-radius: 8px;
+    padding: 12px 16px; color: var(--blanco);
+    font-family: var(--font-body); font-size: 13px;
+    resize: none; min-height: 56px;
+    transition: border-color .2s;
+  }
+  .prompt-input:focus { outline: none; border-color: var(--verde); }
+  .prompt-btn {
+    background: var(--verde); color: var(--negro);
+    border: none; border-radius: 8px; cursor: pointer;
+    padding: 12px 20px; font-size: 13px; font-weight: 600;
+    white-space: nowrap; transition: opacity .2s;
+    font-family: var(--font-body);
+  }
+  .prompt-btn:hover { opacity: 0.88; }
+  .prompt-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .result-box {
+    background: var(--gris2); border-radius: 8px;
+    padding: 1.25rem; min-height: 120px;
+    font-size: 13px; color: var(--gris5); line-height: 1.8;
+    border: 1px solid var(--gris3);
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .result-box.loading {
+    color: var(--gris4);
+    font-style: italic;
+  }
+  .result-placeholder {
+    color: var(--gris3); font-style: italic;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 80px;
+  }
+
+  .quick-prompts {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem;
+  }
+  .quick-prompt {
+    font-size: 11px; padding: 5px 12px;
+    background: var(--gris2); border: 1px solid var(--gris3);
+    border-radius: 99px; cursor: pointer; color: var(--gris5);
+    transition: all .2s; font-family: var(--font-body);
+  }
+  .quick-prompt:hover { border-color: var(--verde); color: var(--verde); }
+
+  /* PRECIOS */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px; margin-top: 3rem;
+  }
+  .pricing-card {
+    background: var(--gris1);
+    border: 1px solid var(--gris2);
+    border-radius: 12px; padding: 2rem;
+    transition: border-color .2s;
+    position: relative;
+  }
+  .pricing-card:hover { border-color: var(--gris3); }
+  .pricing-card.featured {
+    border-color: var(--verde);
+    background: rgba(184,240,74,0.04);
+  }
+  .pricing-badge {
+    position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+    background: var(--verde); color: var(--negro);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 14px; border-radius: 0 0 8px 8px;
+    text-transform: uppercase;
+  }
+  .pricing-name {
+    font-size: 12px; color: var(--gris4);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 600; margin-bottom: 1rem;
+  }
+  .pricing-price {
+    font-family: var(--font-display);
+    font-size: 42px; font-weight: 800;
+    line-height: 1; color: var(--blanco); margin-bottom: .25rem;
+  }
+  .pricing-price sup { font-size: 20px; }
+  .pricing-period { font-size: 12px; color: var(--gris4); margin-bottom: 1.5rem; }
+  .pricing-features { list-style: none; margin-bottom: 1.5rem; }
+  .pricing-features li {
+    font-size: 13px; color: var(--gris5);
+    padding: 6px 0; border-bottom: 1px solid var(--gris2);
+    display: flex; gap: 8px; align-items: center;
+  }
+  .pricing-features li::before { content: '✓'; color: var(--verde); font-weight: 600; flex-shrink: 0; }
+  .pricing-features li.no { color: var(--gris3); }
+  .pricing-features li.no::before { content: '—'; color: var(--gris3); }
+  .pricing-cta {
+    width: 100%; padding: 12px;
+    background: transparent; border: 1px solid var(--gris3);
+    color: var(--blanco); border-radius: 8px; cursor: pointer;
+    font-family: var(--font-body); font-size: 13px; font-weight: 500;
+    transition: all .2s;
+  }
+  .pricing-cta:hover { border-color: var(--verde); color: var(--verde); }
+  .pricing-card.featured .pricing-cta {
+    background: var(--verde); color: var(--negro);
+    border-color: var(--verde); font-weight: 600;
+  }
+  .pricing-card.featured .pricing-cta:hover { opacity: 0.88; }
+
+  /* CONTACTO */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: start;
+  }
+  @media(max-width:700px){ .contact-grid{grid-template-columns:1fr;gap:2rem;} }
+  .contact-form { display: flex; flex-direction: column; gap: 12px; }
+  .form-field {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .form-label { font-size: 12px; color: var(--gris4); font-weight: 500; letter-spacing: 0.05em; }
+  .form-input, .form-select, .form-textarea {
+    background: var(--gris1); border: 1px solid var(--gris2);
+    border-radius: 8px; padding: 12px 14px;
+    color: var(--blanco); font-family: var(--font-body); font-size: 13px;
+    transition: border-color .2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none; border-color: var(--verde);
+  }
+  .form-select { cursor: pointer; }
+  .form-select option { background: var(--gris2); }
+  .form-textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    background: var(--verde); color: var(--negro);
+    border: none; border-radius: 8px; padding: 14px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity .2s; margin-top: 4px;
+  }
+  .form-submit:hover { opacity: 0.88; }
+  .contact-info h3 {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.5px;
+  }
+  .contact-info p { font-size: 14px; color: var(--gris5); line-height: 1.8; margin-bottom: 2rem; }
+  .contact-points { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-point {
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .contact-point-icon {
+    width: 36px; height: 36px; background: rgba(184,240,74,0.1);
+    border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 16px; flex-shrink: 0;
+  }
+  .contact-point-text { font-size: 13px; color: var(--gris5); line-height: 1.6; }
+  .contact-point-label { font-size: 11px; color: var(--verde); font-weight: 600; margin-bottom: 2px; letter-spacing: 0.08em; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--gris2);
+    padding: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+    font-size: 12px; color: var(--gris4);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 800;
+  }
+  .footer-logo span { color: var(--verde); }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--verde); color: var(--negro);
+    padding: 12px 20px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    transform: translateY(100px); opacity: 0;
+    transition: all .3s; z-index: 200;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+
+  /* CURSOR LINE */
+  .cursor { display: inline-block; width: 2px; height: 1em; background: var(--verde); animation: blink .7s step-end infinite; vertical-align: middle; margin-left: 2px; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--negro); }
+  ::-webkit-scrollbar-thumb { background: var(--gris2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Auto<span>Pymes</span> IA</div>
+  <div class="nav-links">
+    <a href="#servicios">Servicios</a>
+    <a href="#demo-ia">Demo</a>
+    <a href="#precios">Precios</a>
+    <a href="#contacto">Contacto</a>
+    <a href="#contacto" class="nav-cta">Empezar</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Agencia activa · Buenos Aires, Argentina</div>
+    <h1>
+      Tu negocio crece<br>
+      <span class="accent">solo.</span><br>
+      <span class="dim">Nosotros lo configuramos.</span>
+    </h1>
+    <p class="hero-sub">
+      Automatizamos el marketing de tu pyme con inteligencia artificial — contenido, redes, emails y atención al cliente — para que vos te dediques a lo que sabés hacer.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('demo-ia').scrollIntoView({behavior:'smooth'})">Ver la IA en acción</button>
+      <button class="btn-secondary" onclick="document.getElementById('precios').scrollIntoView({behavior:'smooth'})">Ver precios</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">3 hs</div><div class="stat-label">por semana es todo lo que te pedimos</div></div>
+      <div><div class="stat-num">~84%</div><div class="stat-label">margen neto por cliente</div></div>
+      <div><div class="stat-num">72 hs</div><div class="stat-label">primer entregable desde el arranque</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker">
+    <span>Gestión de redes sociales</span><span class="hl">·</span>
+    <span>Email marketing automatizado</span><span class="hl">·</span>
+    <span>Chatbot WhatsApp 24/7</span><span class="hl">·</span>
+    <span>Calendarios de contenido</span><span class="hl">·</span>
+    <span>Estrategia digital</span><span class="hl">·</span>
+    <span>Automatización de procesos</span><span class="hl">·</span>
+    <span>Copy con IA</span><span class="hl">·</span>
+    <span>Análisis de métricas</span><span class="hl">·</span>
+    <span>Gestión de redes sociales</span><span class="hl">·</span>
+    <span>Email marketing automatizado</span><span class="hl">·</span>
+    <span>Chatbot WhatsApp 24/7</span><span class="hl">·</span>
+    <span>Calendarios de contenido</span><span class="hl">·</span>
+    <span>Estrategia digital</span><span class="hl">·</span>
+    <span>Automatización de procesos</span><span class="hl">·</span>
+    <span>Copy con IA</span><span class="hl">·</span>
+    <span>Análisis de métricas</span><span class="hl">·</span>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="section-eyebrow">Servicios</div>
+  <h2>Qué hacemos<br>por tu negocio</h2>
+  <p class="section-sub">Cada servicio está diseñado para generar resultados visibles desde la primera semana, sin que necesites saber nada de tecnología.</p>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">📱</div>
+      <div class="service-name">Redes sociales</div>
+      <div class="service-desc">Creamos y publicamos contenido profesional todos los días. Diseño, copy y estrategia incluidos.</div>
+      <div class="service-price">$150 <span>USD/mes</span></div>
+      <ul class="service-includes">
+        <li>8–20 posts mensuales</li>
+        <li>Diseño con identidad de marca</li>
+        <li>Calendario editorial</li>
+        <li>Respuesta a comentarios</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">✉️</div>
+      <div class="service-name">Email marketing</div>
+      <div class="service-desc">Secuencias automáticas que convierten interesados en clientes, sin que vos escribas nada.</div>
+      <div class="service-price">$200 <span>USD/mes</span></div>
+      <ul class="service-includes">
+        <li>Secuencia de bienvenida</li>
+        <li>Emails semanales con IA</li>
+        <li>Segmentación automática</li>
+        <li>Reporte de apertura y clicks</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🤖</div>
+      <div class="service-name">Chatbot WhatsApp</div>
+      <div class="service-desc">Tu negocio responde consultas, agenda turnos y envía presupuestos las 24 horas.</div>
+      <div class="service-price">$250 <span>USD/mes</span></div>
+      <ul class="service-includes">
+        <li>Configuración completa</li>
+        <li>Flujos de atención personalizados</li>
+        <li>Integración con tu agenda</li>
+        <li>Soporte y ajustes incluidos</li>
+      </ul>
+    </div>
+    <div class="service-card" style="background:rgba(184,240,74,0.04); border-left: 2px solid var(--verde)">
+      <div class="service-icon">⚡</div>
+      <div class="service-name">Pack completo</div>
+      <div class="service-desc">Todo integrado y trabajando junto. El sistema más completo para escalar tu negocio.</div>
+      <div class="service-price">$600 <span>USD/mes</span></div>
+      <ul class="service-includes">
+        <li>Todo lo anterior incluido</li>
+        <li>Automatización de procesos</li>
+        <li>Dashboard de métricas</li>
+        <li>2 reuniones estratégicas/mes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO IA -->
+<div style="padding: 0 2rem; max-width: 1100px; margin: 0 auto;" id="demo-ia">
+  <div id="demo">
+    <div class="demo-header">
+      <div class="section-eyebrow">Demo en vivo</div>
+      <h2 style="font-size:clamp(24px,4vw,38px)">Probá la IA ahora mismo</h2>
+      <p style="font-size:13px; color:var(--gris5); margin-top:.5rem">Generá contenido real para tu negocio en segundos. Sin registro.</p>
+    </div>
+
+    <div class="demo-tabs">
+      <button class="demo-tab active" onclick="switchTab('posts')">Post para redes</button>
+      <button class="demo-tab" onclick="switchTab('email')">Email de ventas</button>
+      <button class="demo-tab" onclick="switchTab('whatsapp')">Respuesta WhatsApp</button>
+    </div>
+
+    <!-- TAB: POSTS -->
+    <div class="demo-pane active" id="tab-posts">
+      <div class="quick-prompts" id="qp-posts">
+        <span class="quick-prompt" onclick="setPrompt('posts','Restaurante de sushi en Buenos Aires, promoción 2x1 los martes')">Restaurante 2x1</span>
+        <span class="quick-prompt" onclick="setPrompt('posts','Peluquería canina en Palermo, apertura de nuevos turnos')">Peluquería canina</span>
+        <span class="quick-prompt" onclick="setPrompt('posts','Estudio contable, campaña de declaración de impuestos')">Estudio contable</span>
+        <span class="quick-prompt" onclick="setPrompt('posts','Tienda de ropa, nueva colección de invierno')">Nueva colección</span>
+      </div>
+      <div class="prompt-area">
+        <textarea class="prompt-input" id="input-posts" placeholder="Describí tu negocio y qué querés comunicar..." rows="2"></textarea>
+        <button class="prompt-btn" id="btn-posts" onclick="generate('posts')">Generar</button>
+      </div>
+      <div class="result-box" id="result-posts">
+        <div class="result-placeholder">El contenido generado aparece acá →</div>
+      </div>
+    </div>
+
+    <!-- TAB: EMAIL -->
+    <div class="demo-pane" id="tab-email">
+      <div class="quick-prompts">
+        <span class="quick-prompt" onclick="setPrompt('email','Gimnasio, promoción de enero para nuevos socios')">Promo gimnasio</span>
+        <span class="quick-prompt" onclick="setPrompt('email','Consultora, captación de clientes nuevos para servicios de RRHH')">Consultora RRHH</span>
+        <span class="quick-prompt" onclick="setPrompt('email','E-commerce de productos naturales, reactivar clientes que no compraron en 3 meses')">Reactivar clientes</span>
+      </div>
+      <div class="prompt-area">
+        <textarea class="prompt-input" id="input-email" placeholder="Describí tu negocio y el objetivo del email..." rows="2"></textarea>
+        <button class="prompt-btn" id="btn-email" onclick="generate('email')">Generar</button>
+      </div>
+      <div class="result-box" id="result-email">
+        <div class="result-placeholder">El email generado aparece acá →</div>
+      </div>
+    </div>
+
+    <!-- TAB: WHATSAPP -->
+    <div class="demo-pane" id="tab-whatsapp">
+      <div class="quick-prompts">
+        <span class="quick-prompt" onclick="setPrompt('whatsapp','Clinica dental, consulta de turnos disponibles')">Clínica dental</span>
+        <span class="quick-prompt" onclick="setPrompt('whatsapp','Cerrajería, consulta de precio urgente a las 2am')">Cerrajería urgente</span>
+        <span class="quick-prompt" onclick="setPrompt('whatsapp','Inmobiliaria, consulta sobre un depto en alquiler')">Inmobiliaria</span>
+      </div>
+      <div class="prompt-area">
+        <textarea class="prompt-input" id="input-whatsapp" placeholder="Describí tu negocio y el tipo de consulta que recibís..." rows="2"></textarea>
+        <button class="prompt-btn" id="btn-whatsapp" onclick="generate('whatsapp')">Generar</button>
+      </div>
+      <div class="result-box" id="result-whatsapp">
+        <div class="result-placeholder">La respuesta automática aparece acá →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRECIOS -->
+<section id="precios">
+  <div class="section-eyebrow">Precios</div>
+  <h2>Simple y transparente</h2>
+  <p class="section-sub">Sin contratos largos. Sin letras chicas. Pagás mes a mes y cancelás cuando quieras.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name">Starter</div>
+      <div class="pricing-price"><sup>$</sup>150</div>
+      <div class="pricing-period">USD por mes</div>
+      <ul class="pricing-features">
+        <li>Gestión de 1 red social</li>
+        <li>8 posts mensuales</li>
+        <li>Diseño con tu marca</li>
+        <li>Calendario editorial</li>
+        <li class="no">Email marketing</li>
+        <li class="no">Chatbot WhatsApp</li>
+        <li class="no">Reuniones estratégicas</li>
+      </ul>
+      <button class="pricing-cta" onclick="contactar('Starter')">Empezar con Starter</button>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Más popular</div>
+      <div class="pricing-name">Crecimiento</div>
+      <div class="pricing-price"><sup>$</sup>350</div>
+      <div class="pricing-period">USD por mes</div>
+      <ul class="pricing-features">
+        <li>Gestión de 2 redes sociales</li>
+        <li>20 posts mensuales</li>
+        <li>Email marketing automático</li>
+        <li>Chatbot WhatsApp básico</li>
+        <li>Reporte mensual</li>
+        <li>1 reunión estratégica</li>
+        <li class="no">Automatización avanzada</li>
+      </ul>
+      <button class="pricing-cta" onclick="contactar('Crecimiento')">Empezar con Crecimiento</button>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-name">Transformación</div>
+      <div class="pricing-price"><sup>$</sup>700</div>
+      <div class="pricing-period">USD por mes</div>
+      <ul class="pricing-features">
+        <li>Todo lo del plan Crecimiento</li>
+        <li>Automatización de procesos</li>
+        <li>Dashboard de métricas propio</li>
+        <li>2 reuniones estratégicas</li>
+        <li>Onboarding personalizado</li>
+        <li>Soporte prioritario</li>
+        <li>Integraciones a medida</li>
+      </ul>
+      <button class="pricing-cta" onclick="contactar('Transformación')">Empezar con Transformación</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-grid">
+    <div>
+      <div class="section-eyebrow">Contacto</div>
+      <h2 style="font-size:clamp(28px,4vw,44px)">Hablemos de tu negocio</h2>
+      <p class="section-sub" style="margin-bottom:2rem">Te respondemos en menos de 24 horas. La primera consulta es sin costo.</p>
+      <div class="contact-points">
+        <div class="contact-point">
+          <div class="contact-point-icon">📍</div>
+          <div>
+            <div class="contact-point-label">Ubicación</div>
+            <div class="contact-point-text">Buenos Aires, Argentina<br>Atendemos clientes en todo el país</div>
+          </div>
+        </div>
+        <div class="contact-point">
+          <div class="contact-point-icon">⚡</div>
+          <div>
+            <div class="contact-point-label">Tiempo de respuesta</div>
+            <div class="contact-point-text">Menos de 24 horas en días hábiles.<br>Proyectos activos: respuesta inmediata.</div>
+          </div>
+        </div>
+        <div class="contact-point">
+          <div class="contact-point-icon">🎯</div>
+          <div>
+            <div class="contact-point-label">Primera sesión</div>
+            <div class="contact-point-text">30 minutos sin costo para entender<br>tu negocio y proponer una estrategia.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form" id="contact-form">
+      <div class="form-field">
+        <label class="form-label">Nombre</label>
+        <input class="form-input" type="text" id="f-nombre" placeholder="Tu nombre">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Negocio / empresa</label>
+        <input class="form-input" type="text" id="f-negocio" placeholder="Nombre de tu negocio">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="f-tel" placeholder="tu@email.com">
+      </div>
+      <div class="form-field">
+        <label class="form-label">¿Qué plan te interesa?</label>
+        <select class="form-select" id="f-plan">
+          <option value="">Elegir plan...</option>
+          <option>Starter — $150/mes</option>
+          <option>Crecimiento — $350/mes</option>
+          <option>Transformación — $700/mes</option>
+          <option>No sé todavía, quiero asesorarme</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">¿Qué necesita tu negocio? (opcional)</label>
+        <textarea class="form-textarea" id="f-mensaje" placeholder="Contanos brevemente qué querés mejorar..."></textarea>
+      </div>
+      <button class="form-submit" onclick="enviarFormulario()">Quiero empezar →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Auto<span>Pymes</span> IA</div>
+  <div>Marketing inteligente para negocios reales · Buenos Aires, Argentina</div>
+  <div>© 2026</div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+const API_SYSTEMS = {
+  posts: `Sos un experto en marketing de contenidos para redes sociales de pymes argentinas. 
+Cuando el usuario describa su negocio y objetivo, generá UN post listo para publicar en Instagram o Facebook.
+El post debe incluir:
+- Texto atractivo y natural (no genérico), con emojis donde corresponda
+- 2-3 hashtags relevantes al final
+- Una sugerencia breve de imagen o visual entre corchetes al principio
+Tono: cercano, argentino, directo. Máximo 200 palabras. Sin presentaciones ni explicaciones — entregá el post directamente.`,
+
+  email: `Sos un experto en email marketing para pymes argentinas.
+Cuando el usuario describa su negocio y objetivo, generá un email de ventas/captación listo para enviar.
+El email debe incluir:
+- Asunto (línea "Asunto:")
+- Saludo personalizable
+- Cuerpo del email en 3-4 párrafos cortos
+- Call to action claro
+- Despedida
+Tono: profesional pero cercano, argentino. Sin presentaciones — entregá el email directamente.`,
+
+  whatsapp: `Sos un experto en atención al cliente por WhatsApp para pymes argentinas.
+Cuando el usuario describa su negocio y el tipo de consulta, generá 2-3 respuestas automáticas listas para configurar en un chatbot.
+Cada respuesta debe:
+- Sonar humana y natural, no robótica
+- Resolver la consulta o redirigir al siguiente paso
+- Ser corta (máximo 3 líneas)
+Formato: "Respuesta 1:", "Respuesta 2:", etc. Sin presentaciones — entregá las respuestas directamente.`
+};
+
+let activeTab = 'posts';
+
+function switchTab(tab) {
+  document.querySelectorAll('.demo-tab').forEach((t,i) => {
+    const tabs = ['posts','email','whatsapp'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.demo-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  activeTab = tab;
+}
+
+function setPrompt(tab, text) {
+  document.getElementById('input-' + tab).value = text;
+  switchTab(tab);
+}
+
+async function generate(tab) {
+  const input = document.getElementById('input-' + tab);
+  const btn = document.getElementById('btn-' + tab);
+  const result = document.getElementById('result-' + tab);
+  const text = input.value.trim();
+  if (!text) { showToast('Describí tu negocio primero'); return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  result.textContent = '';
+  result.classList.add('loading');
+
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  result.appendChild(cursor);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: API_SYSTEMS[tab],
+        messages: [{ role: 'user', content: text }],
+        stream: true
+      })
+    });
+
+    result.classList.remove('loading');
+    result.textContent = '';
+    result.appendChild(cursor);
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          if (data === '[DONE]') continue;
+          try {
+            const json = JSON.parse(data);
+            if (json.type === 'content_block_delta' && json.delta?.text) {
+              result.insertBefore(document.createTextNode(json.delta.text), cursor);
+            }
+          } catch(e) {}
+        }
+      }
+    }
+    cursor.remove();
+  } catch(e) {
+    result.classList.remove('loading');
+    result.textContent = 'Error al conectar con la IA. Verificá tu conexión e intentá de nuevo.';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Generar';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function contactar(plan) {
+  document.getElementById('f-plan').value = plan + ' — $' + (plan==='Starter'?'150':plan==='Crecimiento'?'350':'700') + '/mes';
+  document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+}
+
+function enviarFormulario() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const negocio = document.getElementById('f-negocio').value.trim();
+  const email = document.getElementById('f-tel').value.trim();
+  if (!nombre || !negocio || !email) {
+    showToast('Completá nombre, negocio y email');
+    return;
+  }
+  const plan = document.getElementById('f-plan').value;
+  const form = document.getElementById('contact-form');
+  form.innerHTML = `
+    <div style="text-align:center;padding:3rem 1rem">
+      <div style="font-size:48px;margin-bottom:1rem">✅</div>
+      <div style="font-family:var(--font-display);font-size:24px;font-weight:800;margin-bottom:.75rem">¡Recibido, ${nombre}!</div>
+      <div style="font-size:14px;color:var(--gris5);line-height:1.8">
+        Nos ponemos en contacto con vos en menos de 24 horas.<br>
+        ${plan ? 'Plan elegido: <strong style="color:var(--verde)">' + plan + '</strong>' : ''}
+      </div>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
